@@ -3,13 +3,9 @@
 
 <head>
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Register - Sistem Pelaporan Sampah</title>
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.css" rel="stylesheet">
 
     <style>
@@ -20,325 +16,299 @@
         }
 
         body {
-
             min-height: 100vh;
-
             display: flex;
-
             justify-content: center;
-
             align-items: center;
-
             font-family: 'Segoe UI', sans-serif;
-
             background: linear-gradient(135deg, #11998e, #38ef7d);
-
+            padding: 20px 0;
         }
 
         .register-card {
-
-            width: 430px;
-
+            width: 450px;
             border: none;
-
             border-radius: 20px;
-
             overflow: hidden;
-
             background: #fff;
-
             box-shadow: 0 20px 50px rgba(0, 0, 0, .15);
-
         }
 
         .header {
-
             background: linear-gradient(135deg, #198754, #20c997);
-
             color: white;
-
             text-align: center;
-
-            padding: 35px 20px;
-
+            padding: 30px 20px;
         }
 
         .logo {
-
-            width: 90px;
-
-            height: 90px;
-
+            width: 80px;
+            height: 80px;
             margin: auto;
-
             border-radius: 50%;
-
             background: rgba(255, 255, 255, .2);
-
             display: flex;
-
             justify-content: center;
-
             align-items: center;
-
-            font-size: 45px;
-
+            font-size: 40px;
             margin-bottom: 15px;
-
         }
 
         .header h3 {
-
             margin-bottom: 5px;
-
             font-weight: 700;
-
+            font-size: 1.5rem;
         }
 
         .header p {
-
             margin: 0;
-
             opacity: .9;
-
+            font-size: 0.9rem;
         }
 
         .card-body {
-
-            padding: 35px;
-
+            padding: 30px;
         }
 
         .form-label {
-
             font-weight: 600;
-
             color: #555;
-
+            font-size: 0.9rem;
+            margin-bottom: 4px;
         }
 
         .input-group {
-
-            margin-bottom: 20px;
-
+            margin-bottom: 15px;
         }
 
         .input-group-text {
-
             background: #f5f5f5;
-
             border-right: none;
-
         }
 
-        .form-control {
-
+        .form-control, .form-select {
             border-left: none;
-
-            height: 50px;
-
+            height: 48px;
             box-shadow: none !important;
-
         }
 
-        .form-control:focus {
+        .form-select {
+            border-left: 1px solid #ced4da;
+            border-radius: 0 10px 10px 0;
+        }
 
-            border-color: #ced4da;
-
+        .form-control:focus, .form-select:focus {
+            border-color: #198754;
         }
 
         .btn-success {
-
-            height: 50px;
-
+            height: 48px;
             border-radius: 10px;
-
-            font-size: 17px;
-
+            font-size: 16px;
             font-weight: 600;
-
             transition: .3s;
-
         }
 
         .btn-success:hover {
-
             transform: translateY(-2px);
-
             box-shadow: 0 10px 20px rgba(25, 135, 84, .3);
-
         }
 
         .footer-text {
-
             text-align: center;
-
             margin-top: 20px;
-
+            font-size: 0.9rem;
         }
 
         .footer-text a {
-
             text-decoration: none;
-
             font-weight: 600;
-
+            color: #198754;
         }
 
         .footer-text a:hover {
-
             text-decoration: underline;
-
         }
     </style>
-
 </head>
 
 <body>
 
     <div class="card register-card">
-
         <div class="header">
-
             <div class="logo">
                 <i class="bi bi-person-plus-fill"></i>
             </div>
-
             <h3>Sistem Pelaporan Sampah</h3>
-
             <p>Registrasi Masyarakat</p>
-
         </div>
 
         <div class="card-body">
-
             <form id="registerForm">
 
-                <label class="form-label">
-                    Nama Lengkap
-                </label>
-
+                <!-- Nama -->
+                <label class="form-label">Nama Lengkap</label>
                 <div class="input-group">
-
-                    <span class="input-group-text">
-                        <i class="bi bi-person-fill"></i>
-                    </span>
-
-                    <input
-                        type="text"
-                        id="nama"
-                        class="form-control"
-                        placeholder="Masukkan nama lengkap"
-                        required>
-
+                    <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
+                    <input type="text" id="nama" class="form-control" placeholder="Masukkan nama lengkap" required>
                 </div>
 
-                <label class="form-label">
-                    Email
-                </label>
-
+                <!-- Email -->
+                <label class="form-label">Email</label>
                 <div class="input-group">
-
-                    <span class="input-group-text">
-                        <i class="bi bi-envelope-fill"></i>
-                    </span>
-
-                    <input
-                        type="email"
-                        id="email"
-                        class="form-control"
-                        placeholder="Masukkan email"
-                        required>
-
+                    <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
+                    <input type="email" id="email" class="form-control" placeholder="Masukkan email" required>
                 </div>
 
-                <label class="form-label">
-                    Password
-                </label>
-
+                <!-- Nomor Telepon (Opsional) -->
+                <label class="form-label">Nomor Telepon</label>
                 <div class="input-group">
-
-                    <span class="input-group-text">
-                        <i class="bi bi-lock-fill"></i>
-                    </span>
-
-                    <input
-                        type="password"
-                        id="password"
-                        class="form-control"
-                        placeholder="Masukkan password"
-                        required>
-
+                    <span class="input-group-text"><i class="bi bi-telephone-fill"></i></span>
+                    <input type="tel" id="phone" class="form-control" placeholder="Contoh: 08123456789 (Opsional)">
                 </div>
 
-                <button class="btn btn-success w-100">
+                <!-- Kecamatan & Desa -->
+                <div class="row g-2 mb-2">
+                    <div class="col-6">
+                        <label class="form-label">Kecamatan</label>
+                        <select id="kecamatan" class="form-select" required>
+                            <option value="">-- Pilih --</option>
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label">Desa / Kelurahan</label>
+                        <select id="desa" class="form-select" required>
+                            <option value="">-- Pilih --</option>
+                        </select>
+                    </div>
+                </div>
 
-                    <i class="bi bi-person-check-fill"></i>
+                <!-- Password -->
+                <label class="form-label">Password</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                    <input type="password" id="password" class="form-control" placeholder="Masukkan password" required>
+                </div>
 
-                    Daftar
-
+                <!-- Tombol Submit -->
+                <button type="submit" id="btnRegister" class="btn btn-success w-100 mt-2">
+                    <span id="btnText">
+                        <i class="bi bi-person-check-fill"></i> Daftar
+                    </span>
                 </button>
 
             </form>
 
             <div class="footer-text">
-
-                Sudah punya akun?
-
-                <a href="login.html">
-                    Login
-                </a>
-
+                Sudah punya akun? <a href="login.html">Login</a>
             </div>
-
         </div>
-
     </div>
 
     <script>
+        const baseUrl = "https://greenact.vercel.app";
+        
+        const kecamatanSelect = document.getElementById("kecamatan");
+        const desaSelect = document.getElementById("desa");
+        const btnRegister = document.getElementById("btnRegister");
+        const btnText = document.getElementById("btnText");
 
-        document.getElementById("registerForm").addEventListener("submit", async (e) => {
+        // 1. Ambil data Kecamatan secara otomatis saat halaman dimuat
+        async function loadKecamatan() {
+            try {
+                const response = await fetch(`${baseUrl}/kecamatan`);
+                const data = await response.json();
 
-            e.preventDefault();
-
-            const response = await fetch("/register", {
-
-                method: "POST",
-
-                headers: {
-                    "Content-Type": "application/json"
-                },
-
-                body: JSON.stringify({
-
-                    username: nama.value,
-
-                    email: email.value,
-
-                    password: password.value
-
-                })
-
-            });
-
-            const result = await response.json();
-
-            if (result.success) {
-
-                alert("Register berhasil");
-
-                window.location = "login.html";
-
-            } else {
-
-                alert(result.message);
-
+                data.forEach(item => {
+                    const option = document.createElement("option");
+                    option.value = item.nama_kecamatan;
+                    option.textContent = item.nama_kecamatan;
+                    option.setAttribute("data-id", item.kecamatan_id);
+                    kecamatanSelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error(error);
+                alert("Gagal mengambil data wilayah kecamatan");
             }
+        }
 
+        // 2. Ambil data Desa berdasarkan id kecamatan yang dipilih
+        async function loadDesa(kecamatanId) {
+            desaSelect.innerHTML = '<option value="">-- Pilih --</option>';
+            if (!kecamatanId) return;
+
+            try {
+                const response = await fetch(`${baseUrl}/desa/${kecamatanId}`);
+                const data = await response.json();
+
+                data.forEach(item => {
+                    const option = document.createElement("option");
+                    option.value = item.nama_desa;
+                    option.textContent = item.nama_desa;
+                    desaSelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error(error);
+                alert("Gagal mengambil data wilayah desa");
+            }
+        }
+
+        // Event listener saat pilihan kecamatan berubah
+        kecamatanSelect.addEventListener("change", function () {
+            const selectedOption = this.options[this.selectedIndex];
+            const kecamatanId = selectedOption.getAttribute("data-id") || "";
+            loadDesa(kecamatanId);
         });
 
-    </script>
+        // Jalankan fungsi load kecamatan pertama kali
+        loadKecamatan();
 
+        // 3. Proses Submit Pendaftaran Akun
+        document.getElementById("registerForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            // Kunci tombol dan pasang spinner loading
+            btnRegister.disabled = true;
+            btnText.innerHTML = `<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Memproses Pendaftaran...`;
+
+            try {
+                const response = await fetch(`${baseUrl}/register`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        name: document.getElementById("nama").value,
+                        email: document.getElementById("email").value,
+                        phone: document.getElementById("phone").value,
+                        kecamatan: kecamatanSelect.value,
+                        desa: desaSelect.value,
+                        password: document.getElementById("password").value
+                    })
+                });
+
+                const result = await response.json();
+
+                // Backend mengirim response.ok jika status 201 (atau cek key result.success)
+                if (response.ok || result.success) {
+                    alert("Registrasi berhasil! Silakan masuk menggunakan akun baru Anda.");
+                    window.location = "login.html";
+                } else {
+                    alert(result.error || result.message || "Gagal melakukan registrasi.");
+                    // Nyalakan kembali tombol jika ditolak backend (misal email ganda)
+                    btnRegister.disabled = false;
+                    btnText.innerHTML = `<i class="bi bi-person-check-fill"></i> Daftar`;
+                }
+
+            } catch (error) {
+                console.error(error);
+                alert("Tidak dapat terhubung ke server backend GreenAct.");
+                // Nyalakan kembali tombol jika gagal koneksi jaringan
+                btnRegister.disabled = false;
+                btnText.innerHTML = `<i class="bi bi-person-check-fill"></i> Daftar`;
+            }
+        });
+    </script>
 </body>
 
 </html>
