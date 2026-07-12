@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buat Laporan Sampah - GreenAct Warga</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #f4f7f5; font-family: 'Segoe UI', Arial, sans-serif; }
+
+        /* TOPBAR WITH BACK BUTTON */
+        .topbar-back {
+            background: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,.06);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .btn-back {
+            color: #198754;
+            font-size: 22px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            transition: transform 0.2s;
+        }
+        .btn-back:hover {
+            transform: scale(1.1);
+            color: #0f5132;
+        }
+
+        /* CARD STYLE */
+        .card-custom {
+            border: none;
+            border-radius: 20px;
+            background: white;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.04);
+        }
+        .form-label {
+            font-weight: 600;
+            color: #333;
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+        }
+        .form-control, .form-select {
+            border-radius: 10px;
+            padding: 10px 14px;
+            border: 1px solid #ced4da;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #198754;
+            box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.25);
+        }
+
+        /* MAP DESIGN */
+        #map {
+            height: 320px;
+            border-radius: 14px;
+            border: 2px solid #e9ecef;
+            z-index: 1;
+        }
+
+        /* CAPTION BOX */
+        .map-instruction {
+            background-color: #e8f5e9;
+            color: #198754;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TOPBAR DENGAN TOMBOL KEMBALI -->
+    <div class="topbar-back">
+        <a href="dashboard.html" class="btn-back">
+            <i class="bi bi-arrow-left-short"></i>
+        </a>
+        <div>
+            <h5 class="mb-0 fw-bold text-dark" style="font-size: 16px;">Buat Laporan Baru</h5>
+            <small class="text-muted" style="font-size: 11px;">Laporkan tumpukan sampah liar di sekitar Anda</small>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="container px-3 mt-4 mb-5">
+        <div class="card card-custom p-2">
+            <div class="card-body">
+                <form id="reportForm">
+                    
+                    <!-- Foto Sampah (Langsung Kamera Belakang) -->
+                    <div class="mb-3">
+                        <label class="form-label"><i class="bi bi-camera-fill text-success me-1"></i> Ambil Foto Sampah</label>
+                        <input type="file" id="image" class="form-control" accept="image/*" capture="environment" required>
+                        <small class="text-muted" style="font-size: 11px; display: block; mt-1;">Tombol ini akan otomatis membuka kamera belakang HP Anda.</small>
+                    </div>
+
+                    <!-- Judul Laporan -->
+                    <div class="mb-3">
+                        <label class="form-label"><i class="bi bi-type text-success me-1"></i> Judul Laporan / Singkat</label>
+                        <input type="text" id="title" class="form-control" placeholder="Contoh: Sampah menumpuk di pinggir jalan" required>
+                    </div>
+
+                    <!-- Deskripsi -->
+                    <div class="mb-3">
+                        <label class="form-label"><i class="bi bi-chat-left-text-fill text-success me-1"></i> Deskripsi Kronologi</label>
+                        <textarea id="description" class="form-control" rows="3" placeholder="Ceritakan detail kondisi tumpukan sampah atau dampaknya bagi sekitar..." required></textarea>
+                    </div>
+
+                    <!-- Alamat Lengkap -->
+                    <div class="mb-3">
+                        <label class="form-label"><i class="bi bi-textarea-resize text-success me-1"></i> Alamat Lengkap Titik Lokasi</label>
+                        <input type="text" id="address" class="form-control" placeholder="Contoh: Jl. Merdeka No. 12, RT 01/RW 03 (Dekat Toko Berkah)" required>
+                    </div>
+
+                    <!-- Kecamatan & Desa -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-6">
+                            <label class="form-label">Kecamatan</label>
+                            <select id="kecamatan" class="form-select" required>
+                                <option value="">-- Pilih --</option>
+                            </select>
+                        </div>
+
+                        <div class="col-6">
+                            <label class="form-label">Desa / Kelurahan</label>
+                            <select id="desa" class="form-select" required>
+                                <option value="">-- Pilih --</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Komponen Peta -->
+                    <div class="mb-3">
+                        <label class="form-label"><i class="bi bi-map-fill text-success me-1"></i> Pinpoint Peta Lokasi</label>
+                        <div id="map" class="mb-2"></div>
+                        <div class="map-instruction">
+                            <i class="bi bi-info-circle-fill me-1"></i> Sistem mendeteksi lokasi GPS Anda secara otomatis. Klik area lain di peta jika titik kurang akurat.
+                        </div>
+                    </div>
+
+                    <!-- Latitude & Longitude Readonly -->
+                    <div class="row g-2 mb-4">
+                        <div class="col-6">
+                            <small class="text-muted" style="font-size: 11px;">Latitude</small>
+                            <input type="text" id="latitude" class="form-control form-control-sm text-secondary bg-light" readonly>
+                        </div>
+                        <div class="col-6">
+                            <small class="text-muted" style="font-size: 11px;">Longitude</small>
+                            <input type="text" id="longitude" class="form-control form-control-sm text-secondary bg-light" readonly>
+                        </div>
+                    </div>
+
+                    <!-- Tombol Kirim -->
+                    <button class="btn btn-success btn-lg w-100 rounded-pill fw-bold" style="font-size: 0.95rem; box-shadow: 0 4px 12px rgba(25, 135, 84, 0.2);">
+                        <i class="bi bi-send-fill me-1"></i> Kirim Laporan Sekarang
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+const user = JSON.parse(localStorage.getItem("user"));
+
+if(!user){
+    alert("Silakan login terlebih dahulu.");
+    window.location = "login.html";
+}
+
+// Inisialisasi awal peta
+const map = L.map("map").setView([-6.835,108.227],13);
+
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{
+    attribution:"© OpenStreetMap"
+}).addTo(map);
+
+let marker;
+
+const kecamatanSelect = document.getElementById("kecamatan");
+const desaSelect = document.getElementById("desa");
+const latitudeInput = document.getElementById("latitude");
+const longitudeInput = document.getElementById("longitude");
+
+// Load semua kecamatan
+async function loadKecamatan(){
+    try{
+        const response = await fetch("https://greenact.vercel.app/kecamatan");
+        const data = await response.json();
+
+        data.forEach(item=>{
+            const option = document.createElement("option");
+            option.value = item.nama_kecamatan;
+            option.textContent = item.nama_kecamatan;
+            option.setAttribute("data-id", item.kecamatan_id);
+            kecamatanSelect.appendChild(option);
+        });
+    }catch(error){
+        console.error(error);
+        alert("Gagal mengambil data kecamatan");
+    }
+}
+
+// Load desa berdasarkan kecamatan
+async function loadDesa(kecamatanId){
+    desaSelect.innerHTML = '<option value="">-- Pilih --</option>';
+
+    if(!kecamatanId) return;
+
+    try{
+        const response = await fetch(`https://greenact.vercel.app/desa/${kecamatanId}`);
+        const data = await response.json();
+
+        data.forEach(item=>{
+            const option = document.createElement("option");
+            option.value = item.nama_desa;
+            option.textContent = item.nama_desa;
+            desaSelect.appendChild(option);
+        });
+    }catch(error){
+        console.error(error);
+        alert("Gagal mengambil data desa");
+    }
+}
+
+// Ketika kecamatan berubah
+kecamatanSelect.addEventListener("change", function(){
+    const selectedOption = this.options[this.selectedIndex];
+    const kecamatanId = selectedOption.getAttribute("data-id") || "";
+    loadDesa(kecamatanId);
+});
+
+// Pertama kali halaman dibuka
+loadKecamatan();
+
+// Ambil lokasi pengguna via Geolocation GPS bawaan HP
+if(navigator.geolocation){
+    navigator.geolocation.getCurrentPosition(
+        function(position){
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+
+            map.setView([lat,lng],16);
+            marker = L.marker([lat,lng]).addTo(map);
+
+            latitudeInput.value = lat;
+            longitudeInput.value = lng;
+        },
+        function(){
+            console.log("Akses GPS ditolak / tidak merespon, beralih ke klik manual.");
+        },
+        {
+            enableHighAccuracy:true,
+            timeout:10000,
+            maximumAge:0
+        }
+    );
+}
+
+// Klik peta untuk mengganti lokasi secara manual
+map.on("click",function(e){
+    if(marker){
+        map.removeLayer(marker);
+    }
+
+    marker = L.marker(e.latlng).addTo(map);
+    latitudeInput.value = e.latlng.lat;
+    longitudeInput.value = e.latlng.lng;
+});
+
+// Submit laporan ke backend api
+document.getElementById("reportForm").addEventListener("submit", async function(e){
+    e.preventDefault();
+
+    if(latitudeInput.value === "" || longitudeInput.value === ""){
+        alert("Silakan pilih koordinat lokasi pada peta terlebih dahulu.");
+        return;
+    }
+
+    const formData = new FormData();
+
+    // Mengambil data inti user secara aman
+    const dataIntiUser = user.user || user.data || user;
+    formData.append("user_id", dataIntiUser.user_id || dataIntiUser.userId);
+    
+    formData.append("image", document.getElementById("image").files[0]);
+    
+    const judul = document.getElementById("title").value;
+    const isiDeskripsi = document.getElementById("description").value;
+    formData.append("description", `[${judul}] ${isiDeskripsi}`);
+
+    formData.append("address", document.getElementById("address").value);
+    formData.append("kecamatan", kecamatanSelect.value);
+    formData.append("desa", desaSelect.value);
+    formData.append("latitude", latitudeInput.value);
+    formData.append("longitude", longitudeInput.value);
+
+    try{
+        const response = await fetch("https://greenact.vercel.app/report",{
+            method: "POST",
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if(response.ok){
+            alert(result.message || "Laporan berhasil dikirim.");
+            window.location.href = "dashboard.html";
+        }else{
+            alert(result.error || result.message || "Gagal mengirim laporan.");
+        }
+    }catch(error){
+        console.error(error);
+        alert("Tidak dapat terhubung ke server backend GreenAct.");
+    }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Saya - GreenAct Warga</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: #f4f7f5; font-family: 'Segoe UI', Arial, sans-serif; padding-bottom: 90px; }
+
+        /* Header Profil Hijau Melengkung */
+        .profile-header {
+            background: linear-gradient(135deg, #0d3b26 0%, #1b5e20 100%);
+            color: white;
+            padding: 40px 0 35px 0;
+            border-bottom-left-radius: 24px;
+            border-bottom-right-radius: 24px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .avatar-circle {
+            width: 95px;
+            height: 95px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 3px solid rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            margin: 0 auto 15px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: white;
+        }
+
+        /* Card Data Diri */
+        .info-card {
+            border: none;
+            border-radius: 16px;
+            background: white;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+            padding: 10px 20px;
+            margin-top: -20px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid #f1f3f2;
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .icon-box {
+            width: 42px;
+            height: 42px;
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .info-label {
+            font-size: 0.75rem;
+            color: #777;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        .info-value {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #2b2b2b;
+        }
+
+        /* Bottom Navigation Bar Menu (Home, Peta, Tugas, Profile) */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 68px;
+            background-color: white;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.05);
+            border-top: 1px solid #eee;
+            z-index: 1000;
+        }
+
+        .nav-link-custom {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #888;
+            text-decoration: none;
+            font-size: 0.75rem;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .nav-link-custom i {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .nav-link-custom.active {
+            color: #198754;
+            font-weight: 700;
+        }
+
+        .btn-danger-custom {
+            height: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 12px;
+            transition: 0.3s;
+            box-shadow: 0 4px 10px rgba(220, 53, 69, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HERO HEADER PROFIL -->
+    <div class="profile-header">
+        <div class="container">
+            <div class="avatar-circle">
+                <i class="bi bi-person-circle"></i>
+            </div>
+            <h4 class="fw-bold mb-1" id="txtNamaHeader">Memuat Nama...</h4>
+            <p class="mb-0 opacity-75 small" id="txtEmailHeader">memuat_email@mail.com</p>
+        </div>
+    </div>
+
+    <!-- MAIN KONTEN -->
+    <div class="container px-4 mb-4">
+        <div class="info-card">
+            
+            <!-- Item: Nama -->
+            <div class="info-item">
+                <div class="icon-box"><i class="bi bi-person-fill"></i></div>
+                <div>
+                    <div class="info-label">Nama Lengkap</div>
+                    <div class="info-value" id="profileNama">-</div>
+                </div>
+            </div>
+
+            <!-- Item: Email -->
+            <div class="info-item">
+                <div class="icon-box"><i class="bi bi-envelope-fill"></i></div>
+                <div>
+                    <div class="info-label">Alamat Email</div>
+                    <div class="info-value" id="profileEmail">-</div>
+                </div>
+            </div>
+
+            <!-- Item: Telepon -->
+            <div class="info-item">
+                <div class="icon-box"><i class="bi bi-telephone-fill"></i></div>
+                <div>
+                    <div class="info-label">Nomor Telepon</div>
+                    <div class="info-value" id="profilePhone">-</div>
+                </div>
+            </div>
+
+            <!-- Item: Desa -->
+            <div class="info-item">
+                <div class="icon-box"><i class="bi bi-geo-alt-fill"></i></div>
+                <div>
+                    <div class="info-label">Wilayah Kelurahan / Desa</div>
+                    <div class="info-value" id="profileDesa">-</div>
+                </div>
+            </div>
+
+            <!-- Item: Kecamatan -->
+            <div class="info-item">
+                <div class="icon-box"><i class="bi bi-building-fill"></i></div>
+                <div>
+                    <div class="info-label">Kecamatan</div>
+                    <div class="info-value" id="profileKecamatan">-</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Tombol Logout -->
+        <button class="btn btn-danger btn-danger-custom w-100 mt-4" id="btnLogout">
+            <i class="bi bi-box-arrow-left me-2"></i> Keluar Aplikasi
+        </button>
+    </div>
+
+    <!-- BOTTOM NAVIGATION BAR (Home, Peta, Tugas, Profile) -->
+    <div class="bottom-nav">
+        <a href="dashboard.html" class="nav-link-custom">
+            <i class="bi bi-house-door"></i>Dashboard
+        </a>
+        <a href="jadwal.html" class="nav-link-custom">
+            <i class="bi bi-calendar-check"></i>Jadwal
+        </a>
+        <a href="buat_laporan.html" class="nav-link-custom">
+            <i class="bi bi-plus-circle-fill"></i>Jadwal
+        </a>
+        <a href="riwayat.html" class="nav-link-custom">
+            <i class="bi bi-clock-history"></i>Riwayat
+        </a>
+        <a href="profile.html" class="nav-link-custom active">
+            <i class="bi bi-person"></i>Profil
+        </a>
+    </div>
+
+<!-- Bootstrap JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // 1. Ambil data sesi mentah dari localStorage
+        const rawSession = localStorage.getItem("user");
+
+        // Tendang balik ke login jika tidak ada token/data user
+        if (!rawSession) {
+            alert("Sesi Anda telah berakhir. Silakan login kembali.");
+            window.location = "login.html";
+            return;
+        }
+
+        // Parse data JSON ke Object JavaScript
+        const userSession = JSON.parse(rawSession);
+        
+        // Antisipasi jika data dibungkus property `.user` atau `.data`
+        const user = userSession.user || userSession.data || userSession;
+
+        // Render awal menggunakan data cache localStorage agar aplikasi terasa instan
+        tampilkanDataKeLayar(user);
+
+        // 2. Tarik Data Realtime dari API backend get_user.js
+        const userId = user.userId || user.user_id;
+        const targetUrl = `https://greenact.vercel.app/user?user_id=${userId}`;
+        
+        console.log("=== DEBUGGING PROFILE REALTIME ===");
+        console.log("Menembak API User:", targetUrl);
+
+        fetch(targetUrl)
+            .then(res => {
+                if (!res.ok) throw new Error(`HTTP Error! Status: ${res.status}`);
+                return res.json();
+            })
+            .then(dataTerbaru => {
+                console.log("Data segar dari database berhasil diterima:", dataTerbaru);
+                
+                // Perbarui tampilan dengan data terupdate dari database
+                tampilkanDataKeLayar(dataTerbaru);
+                
+                // Perbarui isi cache localStorage agar tetap sinkron
+                const sessionTerupdate = { ...userSession, ...dataTerbaru };
+                localStorage.setItem("user", JSON.stringify(sessionTerupdate));
+            })
+            .catch(err => {
+                console.warn("Menggunakan data lokal (Offline mode). Detail info:", err.message);
+            });
+    });
+
+    // Fungsi pembantu untuk memanipulasi DOM HTML
+    function tampilkanDataKeLayar(data) {
+        document.getElementById("txtNamaHeader").innerText = data.name || "User Warga";
+        document.getElementById("txtEmailHeader").innerText = data.email || "-";
+        
+        document.getElementById("profileNama").innerText = data.name || "-";
+        document.getElementById("profileEmail").innerText = data.email || "-";
+        document.getElementById("profilePhone").innerText = data.phone || "-";
+        document.getElementById("profileDesa").innerText = data.desa || "Belum diatur";
+        document.getElementById("profileKecamatan").innerText = data.kecamatan || "Belum diatur";
+    }
+
+    // Fungsi Logika Aksi Keluar Aplikasi (Logout)
+    document.getElementById("btnLogout").addEventListener("click", () => {
+        if (confirm("Apakah Anda yakin ingin keluar dari sistem pelaporan GreenAct?")) {
+            localStorage.removeItem("user"); // Bersihkan session
+            window.location = "login.html";  // Tendang ke halaman login
+        }
+    });
+</script>
+</body>
+</html>

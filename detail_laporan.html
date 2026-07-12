@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Detail Laporan</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+
+        body{
+            background:#f4f6f9;
+        }
+
+        .card{
+            border:none;
+            border-radius:15px;
+            box-shadow:0 5px 15px rgba(0,0,0,.08);
+        }
+
+        img{
+            width:100%;
+            border-radius:10px;
+            object-fit:cover;
+        }
+
+        .timeline{
+
+            border-left:4px solid #198754;
+            padding-left:20px;
+            margin-top:20px;
+
+        }
+
+        .timeline-item{
+
+            margin-bottom:25px;
+
+        }
+
+        .timeline-item i{
+
+            color:#198754;
+            font-size:22px;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container mt-5 mb-5">
+
+    <a href="riwayat.html" class="btn btn-secondary mb-3">
+
+        <i class="bi bi-arrow-left"></i>
+
+        Kembali
+
+    </a>
+
+    <div class="card">
+
+        <div class="card-header bg-success text-white">
+
+            <h4>
+
+                Detail Laporan
+
+            </h4>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-5">
+
+                    <img
+                        id="foto"
+                        src=""
+                        alt="Foto Sampah">
+
+                </div>
+
+                <div class="col-md-7">
+
+                    <table class="table">
+
+                        <tr>
+
+                            <th width="180">
+
+                                Judul
+
+                            </th>
+
+                            <td id="judul"></td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>
+
+                                Deskripsi
+
+                            </th>
+
+                            <td id="deskripsi"></td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>
+
+                                Kecamatan
+
+                            </th>
+
+                            <td id="kecamatan"></td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>
+
+                                Desa
+
+                            </th>
+
+                            <td id="desa"></td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>
+
+                                Latitude
+
+                            </th>
+
+                            <td id="latitude"></td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>
+
+                                Longitude
+
+                            </th>
+
+                            <td id="longitude"></td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>
+
+                                Status
+
+                            </th>
+
+                            <td>
+
+                                <span
+                                    class="badge bg-success"
+                                    id="status">
+                                </span>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>
+
+                                Tanggal
+
+                            </th>
+
+                            <td id="tanggal"></td>
+
+                        </tr>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+            <hr>
+
+            <h5>
+
+                Progress Penanganan
+
+            </h5>
+
+            <div class="timeline">
+
+                <div class="timeline-item">
+
+                    <i class="bi bi-check-circle-fill"></i>
+
+                    <b>Laporan Dibuat dan Menunggu Verifikasi Admin</b>
+
+                    <br>
+
+                    
+
+                </div>
+
+                <div class="timeline-item">
+
+                    <i class="bi bi-arrow-right-circle-fill"></i>
+
+                    <b>Diteruskan ke Kepala Desa</b>
+
+                </div>
+
+                <div class="timeline-item">
+
+                    <i class="bi bi-calendar-event-fill"></i>
+
+                    <b>Jadwal Jumat Bersih</b>
+
+                </div>
+
+                <div class="timeline-item">
+
+                    <i class="bi bi-truck"></i>
+
+                    <b>Dalam Perjalanan</b>
+
+                </div>
+
+                <div class="timeline-item">
+
+                    <i class="bi bi-check2-all"></i>
+
+                    <b>Selesai</b>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+// 1. Ambil parameter report_id dari URL browser (?id=...)
+const params = new URLSearchParams(window.location.search);
+const reportId = params.get("id");
+
+// 2. Validasi login user dari localStorage
+const user = JSON.parse(localStorage.getItem("user"));
+
+if (!user) {
+    window.location = "login.html";
+}
+
+if (!reportId) {
+    alert("ID Laporan tidak ditemukan!");
+    window.location = "riwayat.html";
+}
+
+// Ambil user_id dari data session login
+const userId = user.user_id || user.userId;
+
+// 3. Panggil API dengan menyertakan query string ?user_id= agar tidak di-reject oleh user_report.js
+fetch(`https://greenact.vercel.app/user-report?user_id=${userId}`)
+.then(res => {
+    if (!res.ok) {
+        throw new Error("Gagal mengambil data dari server");
+    }
+    return res.json();
+})
+.then(reports => {
+    // 4. Cari object laporan yang report_id-nya sesuai
+    const data = reports.find(item => item.report_id == reportId);
+
+    if (!data) {
+        alert("Data laporan tidak ditemukan.");
+        window.location = "riwayat.html";
+        return;
+    }
+
+    // 5. Distribusikan data ke elemen HTML sesuai dengan properti objek dari user_report.js
+    document.getElementById("foto").src = data.image_path || "https://via.placeholder.com/400x300";
+    document.getElementById("judul").innerHTML = data.description ? data.description.substring(0, 20) + "..." : "Laporan Sampah";
+    document.getElementById("deskripsi").innerHTML = data.description || "-";
+    document.getElementById("desa").innerHTML = data.desa || "-";
+    document.getElementById("kecamatan").innerHTML = data.kecamatan || "-";
+    
+    // Default nilai jika database kamu tidak memisahkan kolom koordinat secara eksplisit di user_report.js
+    document.getElementById("latitude").innerHTML = data.latitude || "-";
+    document.getElementById("longitude").innerHTML = data.longitude || "-";
+    
+    // Status Badge & Formatting Tanggal Laporan
+    const statusBadge = document.getElementById("status");
+    statusBadge.innerHTML = data.status ? data.status.toUpperCase() : "PENDING";
+    
+    // Mengatur warna badge berdasarkan isi status
+    if (data.status === "pending") {
+        statusBadge.className = "badge bg-warning text-dark";
+    } else if (data.status === "proses") {
+        statusBadge.className = "badge bg-info text-white";
+    } else {
+        statusBadge.className = "badge bg-success text-white";
+    }
+
+    document.getElementById("tanggal").innerHTML = new Date(data.created_at).toLocaleDateString("id-ID", {
+        day: 'numeric', month: 'long', year: 'numeric'
+    });
+})
+.catch(err => {
+    console.error("Error:", err);
+    alert("Gagal memuat detail laporan. Pastikan koneksi API tidak terblokir.");
+});
+
+</script>
+
+</body>
+
+</html>
