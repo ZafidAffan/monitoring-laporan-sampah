@@ -166,8 +166,10 @@
                     </div>
 
                     <!-- Tombol Kirim -->
-                    <button class="btn btn-success btn-lg w-100 rounded-pill fw-bold" style="font-size: 0.95rem; box-shadow: 0 4px 12px rgba(25, 135, 84, 0.2);">
-                        <i class="bi bi-send-fill me-1"></i> Kirim Laporan Sekarang
+                    <button type="submit" id="btnSubmit" class="btn btn-success btn-lg w-100 rounded-pill fw-bold" style="font-size: 0.95rem; box-shadow: 0 4px 12px rgba(25, 135, 84, 0.2);">
+                        <span id="btnText">
+                            <i class="bi bi-send-fill me-1"></i> Kirim Laporan Sekarang
+                        </span>
                     </button>
                 </form>
             </div>
@@ -197,6 +199,10 @@ const kecamatanSelect = document.getElementById("kecamatan");
 const desaSelect = document.getElementById("desa");
 const latitudeInput = document.getElementById("latitude");
 const longitudeInput = document.getElementById("longitude");
+
+// Elemen Tombol Submit untuk kontrol loading
+const btnSubmit = document.getElementById("btnSubmit");
+const btnText = document.getElementById("btnText");
 
 // Load semua kecamatan
 async function loadKecamatan(){
@@ -293,6 +299,10 @@ document.getElementById("reportForm").addEventListener("submit", async function(
         return;
     }
 
+    // --- AKTIFKAN ANIMASI LOADING & GAIRAHKAN DISABLED ---
+    btnSubmit.disabled = true;
+    btnText.innerHTML = `<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Mengirim Laporan...`;
+
     const formData = new FormData();
 
     // Mengambil data inti user secara aman
@@ -324,10 +334,18 @@ document.getElementById("reportForm").addEventListener("submit", async function(
             window.location.href = "dashboard.html";
         }else{
             alert(result.error || result.message || "Gagal mengirim laporan.");
+            
+            // Kembalikan tombol ke sedia kala jika gagal dari server
+            btnSubmit.disabled = false;
+            btnText.innerHTML = `<i class="bi bi-send-fill me-1"></i> Kirim Laporan Sekarang`;
         }
     }catch(error){
         console.error(error);
         alert("Tidak dapat terhubung ke server backend GreenAct.");
+        
+        // Kembalikan tombol ke sedia kala jika terkena bad connection / server putus
+        btnSubmit.disabled = false;
+        btnText.innerHTML = `<i class="bi bi-send-fill me-1"></i> Kirim Laporan Sekarang`;
     }
 });
 </script>
