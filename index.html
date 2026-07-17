@@ -1,11 +1,325 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0; url=login.html">
-    <title>Redirecting...</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Login - Sistem Pelaporan Sampah</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.css" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    min-height:100vh;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-family:'Segoe UI',sans-serif;
+
+    background:linear-gradient(135deg,#11998e,#38ef7d);
+
+}
+
+.login-card{
+
+    width:420px;
+
+    border:none;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    background:#fff;
+
+    box-shadow:0 20px 50px rgba(0,0,0,.15);
+
+}
+
+.header{
+
+    background:linear-gradient(135deg,#198754,#20c997);
+
+    color:white;
+
+    text-align:center;
+
+    padding:35px 20px;
+
+}
+
+.logo{
+
+    width:90px;
+
+    height:90px;
+
+    margin:auto;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.2);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:45px;
+
+    margin-bottom:15px;
+
+}
+
+.header h3{
+
+    font-weight:700;
+
+    margin-bottom:5px;
+
+}
+
+.header p{
+
+    opacity:.9;
+
+    margin:0;
+
+}
+
+.card-body{
+
+    padding:35px;
+
+}
+
+.form-label{
+
+    font-weight:600;
+
+    color:#555;
+
+}
+
+.input-group{
+
+    margin-bottom:20px;
+
+}
+
+.input-group-text{
+
+    background:#f5f5f5;
+
+    border-right:none;
+
+}
+
+.form-control{
+
+    border-left:none;
+
+    height:50px;
+
+    box-shadow:none !important;
+
+}
+
+.form-control:focus{
+
+    border-color:#ced4da;
+
+}
+
+.btn-success{
+
+    height:50px;
+
+    font-size:17px;
+
+    font-weight:600;
+
+    border-radius:10px;
+
+    transition:.3s;
+
+}
+
+.btn-success:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:0 10px 20px rgba(25,135,84,.3);
+
+}
+
+.footer-text{
+
+    text-align:center;
+
+    margin-top:20px;
+
+}
+
+.footer-text a{
+
+    text-decoration:none;
+
+    font-weight:600;
+
+}
+
+.footer-text a:hover{
+
+    text-decoration:underline;
+
+}
+
+</style>
+
 </head>
+
 <body>
-    <p>Sedang mengalihkan ke halaman login...</p>
+
+<div class="login-card">
+
+    <div class="header">
+
+        <div class="logo">
+            <i class="bi bi-trash3-fill"></i>
+        </div>
+
+        <h3>Sistem Pelaporan Sampah</h3>
+
+        <p>Login Masyarakat</p>
+
+    </div>
+
+    <div class="card-body">
+
+        <form id="loginForm">
+
+            <label class="form-label">
+                Email
+            </label>
+
+            <div class="input-group">
+
+                <span class="input-group-text">
+                    <i class="bi bi-envelope-fill"></i>
+                </span>
+
+                <input
+                    type="email"
+                    id="email"
+                    class="form-control"
+                    placeholder="Masukkan email"
+                    required>
+
+            </div>
+
+            <label class="form-label">
+                Password
+            </label>
+
+            <div class="input-group">
+
+                <span class="input-group-text">
+                    <i class="bi bi-lock-fill"></i>
+                </span>
+
+                <input
+                    type="password"
+                    id="password"
+                    class="form-control"
+                    placeholder="Masukkan password"
+                    required>
+
+            </div>
+
+            <button class="btn btn-success w-100">
+
+                <i class="bi bi-box-arrow-in-right"></i>
+
+                Login
+
+            </button>
+
+        </form>
+
+        <div class="footer-text">
+
+            Belum punya akun?
+
+            <a href="register.html">
+
+                Daftar Sekarang
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+document.getElementById("loginForm").addEventListener("submit", async(e)=>{
+
+    e.preventDefault();
+
+    const response = await fetch("https://greenact.vercel.app/login",{
+
+        method:"POST",
+
+        headers:{
+            "Content-Type":"application/json"
+        },
+
+        body:JSON.stringify({
+
+            email:email.value,
+
+            password:password.value
+
+        })
+
+    });
+
+    const result = await response.json();
+
+    if(result.message === "Login berhasil"){
+
+        alert("Login berhasil");
+
+        localStorage.setItem("user",JSON.stringify(result));
+
+        window.location="dashboard.html";
+
+    }else{
+
+        alert(result.message);
+
+    }
+
+});
+
+</script>
+
 </body>
 </html>
